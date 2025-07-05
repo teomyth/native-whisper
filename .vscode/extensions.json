@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "ms-vscode.vscode-typescript-next",
+    "editorconfig.editorconfig",
+    "ms-vscode.vscode-json"
+  ]
+}
