@@ -8,6 +8,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Fork from nodejs-whisper with enhanced functionality
+- Support for custom model paths via `modelPath` parameter
+- Support for custom model directories via `modelDir` parameter
+- Unified model directory concept (download and use from same location)
+
+### Changed
+- Package name from `nodejs-whisper` to `whispry`
+- Repository moved to https://github.com/teomyth/whispry
+- Updated logging messages to use [Whispry] prefix
+- Simplified API without "custom" prefix
+
+### Technical Details
+- Model priority: `modelPath` > `modelDir + modelName` > standard directory
+- `modelDir` serves dual purpose: download location and model location
+- Maintains full backward compatibility with nodejs-whisper
+
+## [Unreleased]
+
+### Added
 
 - Nothing yet
 

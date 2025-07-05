@@ -1,4 +1,15 @@
 node_modules
 dist
 .env
-example/mother_teresa.wav.vtt
+
+# Generated output files from examples
+example/*.txt
+example/*.vtt
+example/*.srt
+example/*.json
+
+# Model files (can be large)
+*.bin
+
+# Example model directories
+example/.models/
