@@ -5,7 +5,7 @@ import { Logger } from './types'
 
 export const checkIfFileExists = (filePath: string) => {
 	if (!fs.existsSync(filePath)) {
-		throw new Error(`[Nodejs-whisper] Error: No such file: ${filePath}`)
+		throw new Error(`[Whispry] Error: No such file: ${filePath}`)
 	}
 }
 
@@ -42,23 +42,23 @@ async function isValidWavHeader(filePath: string): Promise<boolean> {
 export const convertToWavType = async (inputFilePath: string, logger: Logger = console) => {
 	const fileExtension = path.extname(inputFilePath).toLowerCase()
 
-	logger.debug(`[Nodejs-whisper] Checking if the file is a valid WAV: ${inputFilePath}`)
+	logger.debug(`[Whispry] Checking if the file is a valid WAV: ${inputFilePath}`)
 
 	if (fileExtension === '.wav') {
 		const isWav = await isValidWavHeader(inputFilePath)
 		if (isWav) {
-			logger.debug(`[Nodejs-whisper] File is a valid WAV file.`)
+			logger.debug(`[Whispry] File is a valid WAV file.`)
 
 			return inputFilePath
 		} else {
-			logger.debug(`[Nodejs-whisper] File has a .wav extension but is not a valid WAV, overwriting...`)
+			logger.debug(`[Whispry] File has a .wav extension but is not a valid WAV, overwriting...`)
 
 			// Use a temporary file to avoid overwrite conflicts
 			const tempFile = inputFilePath + '.temp.wav'
 			const command = `ffmpeg -nostats -loglevel error -y -i "${inputFilePath}" -ar 16000 -ac 1 -c:a pcm_s16le "${tempFile}"`
 			const result = shell.exec(command)
 			if (result.code !== 0) {
-				throw new Error(`[Nodejs-whisper] Failed to convert audio file: ${result.stderr}`)
+				throw new Error(`[Whispry] Failed to convert audio file: ${result.stderr}`)
 			}
 
 			fs.renameSync(tempFile, inputFilePath)
@@ -71,12 +71,12 @@ export const convertToWavType = async (inputFilePath: string, logger: Logger = c
 			`${path.basename(inputFilePath, fileExtension)}.wav`
 		)
 
-		logger.debug(`[Nodejs-whisper] Converting to a new WAV file: ${outputFilePath}`)
+		logger.debug(`[Whispry] Converting to a new WAV file: ${outputFilePath}`)
 
 		const command = `ffmpeg -nostats -loglevel error -y -i "${inputFilePath}" -ar 16000 -ac 1 -c:a pcm_s16le "${outputFilePath}"`
 		const result = shell.exec(command)
 		if (result.code !== 0) {
-			throw new Error(`[Nodejs-whisper] Failed to convert audio file: ${result.stderr}`)
+			throw new Error(`[Whispry] Failed to convert audio file: ${result.stderr}`)
 		}
 		return outputFilePath
 	}

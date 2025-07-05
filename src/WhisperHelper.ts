@@ -27,20 +27,46 @@ function getExecutablePath(): string {
 
 export const constructCommand = (filePath: string, args: IOptions): string => {
 	let errors: string[] = []
+	let modelPath: string
+	let modelArg: string
 
-	if (!args.modelName) {
-		errors.push('[Nodejs-whisper] Error: Provide model name')
+	// Check if model path is provided (absolute path)
+	if (args.modelPath) {
+		// Use model path - skip validation
+		if (!fs.existsSync(args.modelPath)) {
+			errors.push(`[Whispry] Error: Model file does not exist: ${args.modelPath}`)
+		}
+		modelPath = args.modelPath
+		modelArg = args.modelPath
 	}
+	// Check if model directory + model name is provided
+	else if (args.modelDir && args.modelName) {
+		// Use model directory with model name
+		const modelFile = MODEL_OBJECT[args.modelName as keyof typeof MODEL_OBJECT] || `${args.modelName}.bin`
+		modelPath = path.join(args.modelDir, modelFile)
 
-	if (!MODELS_LIST.includes(args.modelName)) {
-		errors.push(`[Nodejs-whisper] Error: Enter a valid model name. Available models are: ${MODELS_LIST.join(', ')}`)
+		if (!fs.existsSync(modelPath)) {
+			errors.push(`[Whispry] Error: Model file does not exist in directory: ${modelPath}`)
+		}
+		modelArg = modelPath
 	}
+	// Use standard model validation
+	else if (args.modelName) {
+		if (!MODELS_LIST.includes(args.modelName)) {
+			errors.push(`[Whispry] Error: Enter a valid model name. Available models are: ${MODELS_LIST.join(', ')}`)
+		}
 
-	const modelPath = path.join(WHISPER_CPP_PATH, 'models', MODEL_OBJECT[args.modelName])
-	if (!fs.existsSync(modelPath)) {
-		errors.push(
-			'[Nodejs-whisper] Error: Model file does not exist. Please ensure the model is downloaded and correctly placed.'
-		)
+		modelPath = path.join(WHISPER_CPP_PATH, 'models', MODEL_OBJECT[args.modelName])
+		if (!fs.existsSync(modelPath)) {
+			errors.push(
+				'[Whispry] Error: Model file does not exist. Please ensure the model is downloaded and correctly placed.'
+			)
+		}
+		// Use relative model path from whisper.cpp directory for standard models
+		modelArg = `./models/${MODEL_OBJECT[args.modelName as keyof typeof MODEL_OBJECT]}`
+	}
+	else {
+		errors.push('[Whispry] Error: Provide model name, model path, or model directory with model name')
 	}
 
 	if (errors.length > 0) {
@@ -50,10 +76,8 @@ export const constructCommand = (filePath: string, args: IOptions): string => {
 	// Get the actual executable path
 	const executablePath = getExecutablePath()
 	if (!executablePath) {
-		throw new Error('[Nodejs-whisper] Error: whisper-cli executable not found')
+		throw new Error('[Whispry] Error: whisper-cli executable not found')
 	}
-
-	const modelName = MODEL_OBJECT[args.modelName as keyof typeof MODEL_OBJECT]
 
 	// Construct command with proper path escaping
 	const escapeArg = (arg: string) => {
@@ -62,9 +86,6 @@ export const constructCommand = (filePath: string, args: IOptions): string => {
 		}
 		return `"${arg}"`
 	}
-
-	// Use relative model path from whisper.cpp directory
-	const modelArg = `./models/${modelName}`
 
 	let command = `${escapeArg(executablePath)} ${constructOptionsFlags(args)} -l ${args.whisperOptions?.language || 'auto'} -m ${escapeArg(modelArg)} -f ${escapeArg(filePath)}`
 
