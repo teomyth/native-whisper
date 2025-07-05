@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { nodewhisper } from '../src/index'
+import { transcribe } from '../src/index'
 
 // Copied from https://www.wavsource.com/people/famous.htm
 const AUDIO_FILE = 'mother_teresa.wav'
@@ -9,7 +9,7 @@ const filePath = path.resolve(__dirname, AUDIO_FILE)
 
 async function convert() {
 	try {
-		await nodewhisper(filePath, {
+		await transcribe(filePath, {
 			modelName: 'tiny.en',
 			autoDownloadModelName: 'tiny.en',
 			whisperOptions: {
