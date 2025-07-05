@@ -17,9 +17,9 @@
 	"scripts": {
 		"start": "ts-node src/index.ts",
 		"dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
-		"example:basic": "ts-node example/basic.ts",
-		"example:custom": "ts-node example/custom-model.ts",
-		"example": "npm run example:basic",
+		"example": "ts-node example/basic.ts",
+		"example:custom": "ts-node example/custom.ts",
+		"example:direct": "ts-node example/direct.ts",
 		"typecheck": "tsc --noEmit",
 		"build": "tsc && chmod +x dist/downloadModel.js",
 		"format": "prettier --write src/**/*.ts"

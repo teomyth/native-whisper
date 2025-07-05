@@ -1,27 +1,34 @@
 import path from 'node:path'
 import { transcribe } from '../src/index'
 
-// Copied from https://www.wavsource.com/people/famous.htm
+// Basic usage example - standard model download and usage
 const AUDIO_FILE = 'mother_teresa.wav'
-
-// Need to provide exact path to your audio file.
 const filePath = path.resolve(__dirname, AUDIO_FILE)
 
-async function convert() {
+async function main() {
+	console.log('=== Whispry Basic Example ===\n')
+
 	try {
+		console.log('Using standard model with auto-download...')
+		
 		await transcribe(filePath, {
 			modelName: 'tiny.en',
 			autoDownloadModelName: 'tiny.en',
 			whisperOptions: {
-				outputInVtt: true,
-				// Default is 20 which is too long
-				timestamps_length: 14,
+				outputInText: true,
 			},
 		})
-	} catch (exc) {
-		console.error(exc)
+		
+		console.log('✅ Basic transcription completed!')
+		console.log('\n💡 This example demonstrates:')
+		console.log('   - Automatic model download')
+		console.log('   - Standard model usage')
+		console.log('   - Text output generation')
+
+	} catch (error) {
+		console.error('❌ Error:', error.message)
 		process.exit(1)
 	}
 }
 
-void convert()
+void main()

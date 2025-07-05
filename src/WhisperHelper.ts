@@ -41,6 +41,16 @@ export const constructCommand = (filePath: string, args: IOptions): string => {
 	}
 	// Check if model directory + model name is provided
 	else if (args.modelDir && args.modelName) {
+		// Ensure model directory exists
+		if (!fs.existsSync(args.modelDir)) {
+			try {
+				fs.mkdirSync(args.modelDir, { recursive: true })
+				console.debug(`[Whispry] Created model directory: ${args.modelDir}`)
+			} catch (error) {
+				errors.push(`[Whispry] Error: Failed to create model directory: ${args.modelDir}`)
+			}
+		}
+
 		// Use model directory with model name
 		const modelFile = MODEL_OBJECT[args.modelName as keyof typeof MODEL_OBJECT] || `${args.modelName}.bin`
 		modelPath = path.join(args.modelDir, modelFile)

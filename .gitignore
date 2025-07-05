@@ -11,5 +11,5 @@ example/*.json
 # Model files (can be large)
 *.bin
 
-# Example model directories
-example/.models/
+# Model directories
+.models/
