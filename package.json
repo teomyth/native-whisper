@@ -1,23 +1,25 @@
 {
-	"name": "nodejs-whisper",
+	"name": "whispry",
 	"version": "0.2.9",
-	"description": "Node bindings for OpenAI's Whisper. Optimized for CPU.",
+	"description": "Node bindings for OpenAI's Whisper with custom model path support. Fork of nodejs-whisper.",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"publishConfig": {
 		"access": "public"
 	},
 	"bin": {
-		"nodejs-whisper": "dist/downloadModel.js"
+		"whispry": "dist/downloadModel.js"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ChetanXpro/nodejs-whisper"
+		"url": "https://github.com/teomyth/whispry"
 	},
 	"scripts": {
 		"start": "ts-node src/index.ts",
 		"dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
-		"test": "ts-node example/index.ts",
+		"example:basic": "ts-node example/basic.ts",
+		"example:custom": "ts-node example/custom-model.ts",
+		"example": "npm run example:basic",
 		"typecheck": "tsc --noEmit",
 		"build": "tsc && chmod +x dist/downloadModel.js",
 		"format": "prettier --write src/**/*.ts"
@@ -37,6 +39,8 @@
 		"Timestamps",
 		"nodejs whisper",
 		"whisper nodejs",
+		"whispry",
+		"custom model path",
 		"generate timestamps",
 		"generate transcript",
 		"subtitle",
@@ -45,9 +49,9 @@
 	],
 	"author": "chetan",
 	"license": "MIT",
-	"homepage": "https://github.com/ChetanXpro/nodejs-whisper#readme",
+	"homepage": "https://github.com/teomyth/whispry#readme",
 	"bugs": {
-		"url": "https://github.com/ChetanXpro/nodejs-whisper/issues"
+		"url": "https://github.com/teomyth/whispry/issues"
 	},
 	"dependencies": {
 		"readline-sync": "^1.4.10",
