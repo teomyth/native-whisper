@@ -1,11 +1,12 @@
-# nodejs-whisper
+# whispry
 
-Node.js bindings for OpenAI's Whisper model.
+Node.js bindings for OpenAI's Whisper model with custom model path support. Fork of nodejs-whisper.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
 ## Features
 
+-   **Custom Model Path Support**: Use your own trained models by providing a custom model file path
 -   Automatically convert the audio to WAV format with a 16000 Hz frequency to support the whisper model.
 -   Output transcripts to (.txt .srt .vtt .json .wts .lrc)
 -   Optimized for CPU (Including Apple Silicon ARM)
@@ -13,6 +14,7 @@ Node.js bindings for OpenAI's Whisper model.
 -   Split on word rather than on token (Optional)
 -   Translate from source language to english (Optional)
 -   Convert audio format to wav to support whisper model
+-   Backward compatible with nodejs-whisper
 
 ## Installation
 
@@ -23,16 +25,16 @@ sudo apt update
 sudo apt install build-essential
 ```
 
-2. Install nodejs-whisper with npm
+2. Install whispry with npm
 
 ```bash
-  npm i nodejs-whisper
+  npm i whispry
 ```
 
-3. Download whisper model
+3. Download whisper model (for standard models)
 
 ```bash
-  npx nodejs-whisper download
+  npx whispry download
 ```
 
 -   NOTE: user may need to install make tool
@@ -43,14 +45,14 @@ sudo apt install build-essential
    - Option 1: Install MSYS2 from https://www.msys2.org/
    - Option 2: Install MinGW-w64 from https://www.mingw-w64.org/
 
-2. Install nodejs-whisper with npm
+2. Install whispry with npm
 ```bash
-npm i nodejs-whisper
+npm i whispry
 ```
 
-3. Download whisper model
+3. Download whisper model (for standard models)
 ```bash
-npx nodejs-whisper download
+npx whispry download
 ```
 
 - Note: Make sure mingw32-make or make is available in your system PATH.
@@ -61,12 +63,13 @@ See `example/index.ts` (can be run with `$ npm run test`)
 
 ```javascript
 import path from 'path'
-import { nodewhisper } from 'nodejs-whisper'
+import { transcribe } from 'whispry'
 
 // Need to provide exact path to your audio file.
 const filePath = path.resolve(__dirname, 'YourAudioFileName')
 
-await nodewhisper(filePath, {
+// Using standard model
+await transcribe(filePath, {
 	modelName: 'base.en', //Downloaded models name
 	autoDownloadModelName: 'base.en', // (optional) auto download a model if model is not present
 	removeWavFileAfterTranscription: false, // (optional) remove wav file once transcribed
@@ -85,6 +88,37 @@ await nodewhisper(filePath, {
 		wordTimestamps: false, // word-level timestamps
 		timestamps_length: 20, // amount of dialogue per timestamp pair
 		splitOnWord: true, // split on word rather than on token
+	},
+})
+
+// Using custom models (NEW FEATURES)
+// Method 1: Specify model directory
+const modelDir = path.join(__dirname, 'models')
+await transcribe(filePath, {
+	modelName: 'tiny.en',
+	modelDir: modelDir,
+	whisperOptions: {
+		outputInSrt: true,
+	},
+})
+
+// Method 2: Direct file path
+const modelPath = path.join(__dirname, 'models', 'my-custom-model.bin')
+await transcribe(filePath, {
+	modelPath: modelPath,
+	whisperOptions: {
+		outputInSrt: true,
+		language: 'en',
+	},
+})
+
+// Method 3: Download to and use custom directory
+await transcribe(filePath, {
+	modelName: 'tiny.en',
+	autoDownloadModelName: 'tiny.en',
+	modelDir: path.join(__dirname, 'models'), // Download to and use this directory
+	whisperOptions: {
+		outputInSrt: true,
 	},
 })
 
@@ -108,10 +142,12 @@ const MODELS_LIST = [
 
 ```
  interface IOptions {
-	modelName: string
+	modelName?: string // Model name (works with directories)
+	modelPath?: string // NEW: Direct path to model file
+	modelDir?: string // NEW: Directory for models (download & use)
+	autoDownloadModelName?: string // Model to auto-download
 	removeWavFileAfterTranscription?: boolean
 	withCuda?: boolean
-	autoDownloadModelName?: string
 	whisperOptions?: WhisperOptions
 	logger?: Console
 }
@@ -133,18 +169,106 @@ const MODELS_LIST = [
 
 ```
 
+## Custom Model Path Usage
+
+The main feature of whispry is the ability to use custom model files. This is useful when you have:
+- Fine-tuned models for specific domains
+- Custom trained models
+- Models in different locations than the default
+
+### Example with Custom Model
+
+```javascript
+import { transcribe } from 'whispry'
+import path from 'path'
+
+// Method 1: Specify model directory
+const modelDir = path.join(__dirname, 'models')
+const result = await transcribe('audio.wav', {
+  modelName: 'tiny.en',
+  modelDir: modelDir,
+  whisperOptions: {
+    outputInSrt: true,
+    language: 'en'
+  }
+})
+
+// Method 2: Direct file path
+const modelPath = path.join(__dirname, 'models', 'my-custom-model.bin')
+const result2 = await transcribe('audio.wav', {
+  modelPath: modelPath,
+  whisperOptions: {
+    outputInSrt: true,
+    language: 'auto'
+  }
+})
+
+// Method 3: Download to and use custom directory
+const result3 = await transcribe('audio.wav', {
+  modelName: 'tiny.en',
+  autoDownloadModelName: 'tiny.en',
+  modelDir: modelDir, // Download to and use this directory
+  whisperOptions: {
+    outputInSrt: true,
+    language: 'auto'
+  }
+})
+```
+
+### Model Priority
+
+1. **modelPath** - Direct file path (highest priority)
+2. **modelDir + modelName** - Model directory with model name
+3. **Standard directory** - Default whisper.cpp models (fallback)
+
+### Important Notes
+
+- `modelDir` serves dual purpose: download location and model location
+- When `modelDir` is specified, models are downloaded to and used from that directory
+- Model files should follow whisper.cpp naming (e.g., `ggml-tiny.en.bin`)
+- Models must be compatible with whisper.cpp format
+
+## Migration from nodejs-whisper
+
+Whispry is fully backward compatible with nodejs-whisper. Simply replace the package:
+
+```bash
+# Remove old package
+npm uninstall nodejs-whisper
+
+# Install whispry
+npm install whispry
+```
+
+### Function Names
+
+- **Recommended**: Use `transcribe` function for new code
+- **Legacy**: `nodewhisper` function is still available but deprecated
+
+```javascript
+// New (recommended)
+import { transcribe } from 'whispry'
+await transcribe('audio.wav', { modelName: 'tiny.en' })
+
+// Legacy (deprecated but still works)
+import { nodewhisper } from 'whispry'
+await nodewhisper('audio.wav', { modelName: 'tiny.en' })
+```
+
+No code changes required for existing functionality!
+
 ## Run locally
 
 Clone the project
 
 ```bash
-  git clone https://github.com/ChetanXpro/nodejs-whisper
+  git clone https://github.com/teomyth/whispry
 ```
 
 Go to the project directory
 
 ```bash
-  cd nodejs-whisper
+  cd whispry
 ```
 
 Install dependencies
