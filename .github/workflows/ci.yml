@@ -26,17 +26,20 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Reinstall Biome (fix platform-specific binary)
+      run: npm install @biomejs/biome --force
+
     - name: Run type check
       run: npm run typecheck
 
     - name: Run build
       run: npm run build
 
+    - name: Fix code formatting and linting (if needed)
+      run: npm run check:fix || true
+
     - name: Check code formatting and linting
       run: npm run check
-
-    - name: Fix code formatting and linting
-      run: npm run check:fix
 
     # For pushes to main or PRs from same repo, commit formatting changes
     - name: Commit changes
