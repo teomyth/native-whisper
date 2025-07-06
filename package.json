@@ -27,7 +27,15 @@
     "lint": "biome lint .",
     "lint:fix": "biome lint --write .",
     "check": "biome check .",
-    "check:fix": "biome check --write ."
+    "check:fix": "biome check --write .",
+    "release": "release-it",
+    "release:dry": "release-it --dry-run",
+    "release:patch": "release-it patch",
+    "release:minor": "release-it minor",
+    "release:major": "release-it major",
+    "release:beta": "release-it --preRelease=beta",
+    "release:alpha": "release-it --preRelease=alpha",
+    "prepare": "husky"
   },
   "keywords": [
     "OpenAI",
@@ -52,7 +60,7 @@
     "nodejs-whisper",
     "audio-to-subtitles"
   ],
-  "author": "chetan",
+  "author": "teomyth <teomyth@gmail.com> (https://github.com/teomyth)",
   "license": "MIT",
   "homepage": "https://github.com/teomyth/whispry#readme",
   "bugs": {
@@ -64,10 +72,15 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.6",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@release-it/conventional-changelog": "^10.0.1",
     "@types/node": "^24.0.3",
     "@types/readline-sync": "^1.4.4",
     "@types/shelljs": "^0.8.12",
+    "husky": "^9.1.7",
     "nodemon": "3.1.10",
+    "release-it": "^19.0.3",
     "ts-node": "^10.8.2",
     "typescript": "^5.1.6"
   },

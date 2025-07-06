@@ -1,0 +1,78 @@
+{
+  "git": {
+    "commitMessage": "chore: release v${version}",
+    "tagName": "v${version}",
+    "requireCleanWorkingDir": true,
+    "requireBranch": "main",
+    "push": true,
+    "pushArgs": ["--follow-tags"]
+  },
+  "github": {
+    "release": true,
+    "releaseName": "Release v${version}",
+    "releaseNotes": null
+  },
+  "npm": {
+    "publish": true,
+    "publishArgs": ["--access", "public"]
+  },
+  "hooks": {
+    "before:init": ["npm run check", "npm run typecheck", "npm run build"],
+    "after:bump": ["npm run build"],
+    "after:release": ["echo Successfully released ${name} v${version} to ${repo.repository}."]
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": {
+        "name": "conventionalcommits",
+        "types": [
+          {
+            "type": "feat",
+            "section": "✨ Features"
+          },
+          {
+            "type": "fix",
+            "section": "🐛 Bug Fixes"
+          },
+          {
+            "type": "perf",
+            "section": "⚡ Performance Improvements"
+          },
+          {
+            "type": "refactor",
+            "section": "♻️ Code Refactoring"
+          },
+          {
+            "type": "docs",
+            "section": "📚 Documentation"
+          },
+          {
+            "type": "style",
+            "section": "💎 Styles"
+          },
+          {
+            "type": "test",
+            "section": "🧪 Tests"
+          },
+          {
+            "type": "build",
+            "section": "🏗️ Build System"
+          },
+          {
+            "type": "ci",
+            "section": "👷 CI/CD"
+          },
+          {
+            "type": "chore",
+            "section": "🔧 Chores"
+          }
+        ]
+      },
+      "infile": "CHANGELOG.md",
+      "header": "# Changelog\n\nAll notable changes to this project will be documented in this file.\n\nThe format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),\nand this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\n\n",
+      "gitRawCommitsOpts": {
+        "path": "."
+      }
+    }
+  }
+}

@@ -93,7 +93,7 @@ await transcribe(filePath, {
 
 // Using custom models (NEW FEATURES)
 // Method 1: Specify model directory
-const modelDir = path.join(__dirname, 'models')
+const modelDir = path.join(process.cwd(), '.models')
 await transcribe(filePath, {
 	modelName: 'tiny.en',
 	modelDir: modelDir,
@@ -183,7 +183,7 @@ import { transcribe } from 'whispry'
 import path from 'path'
 
 // Method 1: Specify model directory
-const modelDir = path.join(__dirname, 'models')
+const modelDir = path.join(process.cwd(), '.models')
 const result = await transcribe('audio.wav', {
   modelName: 'tiny.en',
   modelDir: modelDir,
@@ -295,8 +295,17 @@ Build project
 
 ## Feedback
 
-If you have any feedback, please reach out to us at chetanbaliyan10@gmail.com
+If you have any feedback, please reach out to us at teomyth@gmail.com
 
 ## Authors
 
--   [@chetanXpro](https://www.github.com/chetanXpro)
+-   [@teomyth](https://www.github.com/teomyth) - Current maintainer
+
+## Acknowledgments
+
+This project is a fork of [nodejs-whisper](https://github.com/ChetanXpro/nodejs-whisper) by [@chetanXpro](https://www.github.com/chetanXpro). We extend our gratitude to the original author for creating the foundation that made whispry possible.
+
+### Original Project
+- **Original Author**: [@chetanXpro](https://www.github.com/chetanXpro)
+- **Original Repository**: [nodejs-whisper](https://github.com/ChetanXpro/nodejs-whisper)
+- **License**: MIT
