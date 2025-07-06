@@ -25,7 +25,7 @@ async function main() {
     console.log('   - Standard model usage')
     console.log('   - Text output generation')
   } catch (error) {
-    console.error('❌ Error:', error.message)
+    console.error('❌ Error:', error instanceof Error ? error.message : String(error))
     process.exit(1)
   }
 }

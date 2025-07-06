@@ -29,7 +29,7 @@ async function main() {
     console.log('   - Automatic directory creation')
     console.log('   - Model download to custom location')
   } catch (error) {
-    console.error('❌ Error:', error.message)
+    console.error('❌ Error:', error instanceof Error ? error.message : String(error))
     process.exit(1)
   }
 }
