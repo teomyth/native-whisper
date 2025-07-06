@@ -56,7 +56,8 @@
           },
           {
             "type": "build",
-            "section": "🏗️ Build System"
+            "section": "🏗️ Build System",
+            "hidden": true
           },
           {
             "type": "ci",
