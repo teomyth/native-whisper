@@ -1,6 +1,6 @@
-# whispry
+# native-whisper
 
-Node.js bindings for OpenAI's Whisper model with custom model path support. Fork of nodejs-whisper.
+Native Node.js bindings for OpenAI's Whisper using whisper.cpp. High-performance local speech-to-text with custom model path support.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
@@ -25,16 +25,16 @@ sudo apt update
 sudo apt install build-essential
 ```
 
-2. Install whispry with npm
+2. Install native-whisper with npm
 
 ```bash
-  npm i whispry
+  npm i native-whisper
 ```
 
 3. Download whisper model (for standard models)
 
 ```bash
-  npx whispry download
+  npx native-whisper download
 ```
 
 -   NOTE: user may need to install make tool
@@ -45,14 +45,14 @@ sudo apt install build-essential
    - Option 1: Install MSYS2 from https://www.msys2.org/
    - Option 2: Install MinGW-w64 from https://www.mingw-w64.org/
 
-2. Install whispry with npm
+2. Install native-whisper with npm
 ```bash
-npm i whispry
+npm i native-whisper
 ```
 
 3. Download whisper model (for standard models)
 ```bash
-npx whispry download
+npx native-whisper download
 ```
 
 - Note: Make sure mingw32-make or make is available in your system PATH.
@@ -63,7 +63,7 @@ See `example/index.ts` (can be run with `$ npm run test`)
 
 ```javascript
 import path from 'path'
-import { transcribe } from 'whispry'
+import { transcribe } from 'native-whisper'
 
 // Need to provide exact path to your audio file.
 const filePath = path.resolve(__dirname, 'YourAudioFileName')
@@ -171,7 +171,7 @@ const MODELS_LIST = [
 
 ## Custom Model Path Usage
 
-The main feature of whispry is the ability to use custom model files. This is useful when you have:
+The main feature of native-whisper is the ability to use custom model files. This is useful when you have:
 - Fine-tuned models for specific domains
 - Custom trained models
 - Models in different locations than the default
@@ -179,7 +179,7 @@ The main feature of whispry is the ability to use custom model files. This is us
 ### Example with Custom Model
 
 ```javascript
-import { transcribe } from 'whispry'
+import { transcribe } from 'native-whisper'
 import path from 'path'
 
 // Method 1: Specify model directory
@@ -230,14 +230,14 @@ const result3 = await transcribe('audio.wav', {
 
 ## Migration from nodejs-whisper
 
-Whispry is fully backward compatible with nodejs-whisper. Simply replace the package:
+Native-whisper is fully backward compatible with nodejs-whisper. Simply replace the package:
 
 ```bash
 # Remove old package
 npm uninstall nodejs-whisper
 
-# Install whispry
-npm install whispry
+# Install native-whisper
+npm install native-whisper
 ```
 
 ### Function Names
@@ -247,11 +247,11 @@ npm install whispry
 
 ```javascript
 // New (recommended)
-import { transcribe } from 'whispry'
+import { transcribe } from 'native-whisper'
 await transcribe('audio.wav', { modelName: 'tiny.en' })
 
 // Legacy (deprecated but still works)
-import { nodewhisper } from 'whispry'
+import { nodewhisper } from 'native-whisper'
 await nodewhisper('audio.wav', { modelName: 'tiny.en' })
 ```
 
@@ -262,13 +262,13 @@ No code changes required for existing functionality!
 Clone the project
 
 ```bash
-  git clone https://github.com/teomyth/whispry
+  git clone https://github.com/teomyth/native-whisper
 ```
 
 Go to the project directory
 
 ```bash
-  cd whispry
+  cd native-whisper
 ```
 
 Install dependencies
@@ -303,7 +303,7 @@ If you have any feedback, please reach out to us at teomyth@gmail.com
 
 ## Acknowledgments
 
-This project is a fork of [nodejs-whisper](https://github.com/ChetanXpro/nodejs-whisper) by [@chetanXpro](https://www.github.com/chetanXpro). We extend our gratitude to the original author for creating the foundation that made whispry possible.
+This project is a fork of [nodejs-whisper](https://github.com/ChetanXpro/nodejs-whisper) by [@chetanXpro](https://www.github.com/chetanXpro). We extend our gratitude to the original author for creating the foundation that made native-whisper possible.
 
 ### Original Project
 - **Original Author**: [@chetanXpro](https://www.github.com/chetanXpro)

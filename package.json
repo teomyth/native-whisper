@@ -1,18 +1,18 @@
 {
-  "name": "whispry",
+  "name": "native-whisper",
   "version": "0.2.9",
-  "description": "Node bindings for OpenAI's Whisper with custom model path support. Fork of nodejs-whisper.",
+  "description": "Native Node.js bindings for OpenAI's Whisper using whisper.cpp. High-performance local speech-to-text with custom model path support.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "bin": {
-    "whispry": "dist/downloadModel.js"
+    "native-whisper": "dist/downloadModel.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/teomyth/whispry"
+    "url": "https://github.com/teomyth/native-whisper"
   },
   "scripts": {
     "start": "ts-node src/index.ts",
@@ -42,31 +42,34 @@
   "keywords": [
     "OpenAI",
     "Whisper",
+    "whisper.cpp",
+    "native",
     "CPP",
     "C++",
-    "Whisper",
     "Bindings",
     "Transcript",
     "Transcriber",
     "Audio",
     "Speech",
     "Speech-to-Text",
+    "STT",
     "Timestamps",
     "nodejs whisper",
     "whisper nodejs",
-    "whispry",
+    "native-whisper",
     "custom model path",
     "generate timestamps",
     "generate transcript",
     "subtitle",
-    "nodejs-whisper",
-    "audio-to-subtitles"
+    "audio-to-subtitles",
+    "local speech recognition",
+    "offline transcription"
   ],
   "author": "teomyth <teomyth@gmail.com> (https://github.com/teomyth)",
   "license": "MIT",
-  "homepage": "https://github.com/teomyth/whispry#readme",
+  "homepage": "https://github.com/teomyth/native-whisper#readme",
   "bugs": {
-    "url": "https://github.com/teomyth/whispry/issues"
+    "url": "https://github.com/teomyth/native-whisper/issues"
   },
   "dependencies": {
     "readline-sync": "^1.4.10",

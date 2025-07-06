@@ -7,7 +7,7 @@ const AUDIO_FILE = 'mother_teresa.wav'
 const filePath = path.resolve(__dirname, AUDIO_FILE)
 
 async function main() {
-  console.log('=== Whispry Direct Path Example ===\n')
+  console.log('=== Native-Whisper Direct Path Example ===\n')
 
   try {
     // Check if model exists in custom directory

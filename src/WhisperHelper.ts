@@ -34,7 +34,7 @@ export const constructCommand = (filePath: string, args: IOptions): string => {
   if (args.modelPath) {
     // Use model path - skip validation
     if (!fs.existsSync(args.modelPath)) {
-      errors.push(`[Whispry] Error: Model file does not exist: ${args.modelPath}`)
+      errors.push(`[Native-Whisper] Error: Model file does not exist: ${args.modelPath}`)
     }
     modelPath = args.modelPath
     modelArg = args.modelPath
@@ -45,9 +45,9 @@ export const constructCommand = (filePath: string, args: IOptions): string => {
     if (!fs.existsSync(args.modelDir)) {
       try {
         fs.mkdirSync(args.modelDir, { recursive: true })
-        console.debug(`[Whispry] Created model directory: ${args.modelDir}`)
+        console.debug(`[Native-Whisper] Created model directory: ${args.modelDir}`)
       } catch (_error) {
-        errors.push(`[Whispry] Error: Failed to create model directory: ${args.modelDir}`)
+        errors.push(`[Native-Whisper] Error: Failed to create model directory: ${args.modelDir}`)
       }
     }
 
@@ -56,7 +56,7 @@ export const constructCommand = (filePath: string, args: IOptions): string => {
     modelPath = path.join(args.modelDir, modelFile)
 
     if (!fs.existsSync(modelPath)) {
-      errors.push(`[Whispry] Error: Model file does not exist in directory: ${modelPath}`)
+      errors.push(`[Native-Whisper] Error: Model file does not exist in directory: ${modelPath}`)
     }
     modelArg = modelPath
   }
@@ -64,21 +64,21 @@ export const constructCommand = (filePath: string, args: IOptions): string => {
   else if (args.modelName) {
     if (!MODELS_LIST.includes(args.modelName as ModelName)) {
       errors.push(
-        `[Whispry] Error: Enter a valid model name. Available models are: ${MODELS_LIST.join(', ')}`
+        `[Native-Whisper] Error: Enter a valid model name. Available models are: ${MODELS_LIST.join(', ')}`
       )
     }
 
     modelPath = path.join(WHISPER_CPP_PATH, 'models', MODEL_OBJECT[args.modelName as ModelName])
     if (!fs.existsSync(modelPath)) {
       errors.push(
-        '[Whispry] Error: Model file does not exist. Please ensure the model is downloaded and correctly placed.'
+        '[Native-Whisper] Error: Model file does not exist. Please ensure the model is downloaded and correctly placed.'
       )
     }
     // Use relative model path from whisper.cpp directory for standard models
     modelArg = `./models/${MODEL_OBJECT[args.modelName as ModelName]}`
   } else {
     errors.push(
-      '[Whispry] Error: Provide model name, model path, or model directory with model name'
+      '[Native-Whisper] Error: Provide model name, model path, or model directory with model name'
     )
   }
 
@@ -89,7 +89,7 @@ export const constructCommand = (filePath: string, args: IOptions): string => {
   // Get the actual executable path
   const executablePath = getExecutablePath()
   if (!executablePath) {
-    throw new Error('[Whispry] Error: whisper-cli executable not found')
+    throw new Error('[Native-Whisper] Error: whisper-cli executable not found')
   }
 
   // Construct command with proper path escaping

@@ -24,7 +24,7 @@ export async function transcribe(filePath: string, options: IOptions): Promise<s
   try {
     if (options.autoDownloadModelName) {
       logger.debug(
-        `[Whispry] Checking and downloading model if needed: ${options.autoDownloadModelName}`
+        `[Native-Whisper] Checking and downloading model if needed: ${options.autoDownloadModelName}`
       )
 
       logger.debug('autoDownloadModelName', options.autoDownloadModelName)
@@ -39,16 +39,16 @@ export async function transcribe(filePath: string, options: IOptions): Promise<s
       )
     }
 
-    logger.debug(`[Whispry] Checking file existence: ${filePath}`)
+    logger.debug(`[Native-Whisper] Checking file existence: ${filePath}`)
     checkIfFileExists(filePath)
 
-    logger.debug(`[Whispry] Converting file to WAV format: ${filePath}`)
+    logger.debug(`[Native-Whisper] Converting file to WAV format: ${filePath}`)
     const outputFilePath = await convertToWavType(filePath, logger)
 
-    logger.debug(`[Whispry] Constructing command for file: ${outputFilePath}`)
+    logger.debug(`[Native-Whisper] Constructing command for file: ${outputFilePath}`)
     const command = constructCommand(outputFilePath, options)
 
-    logger.debug(`[Whispry] Executing command: ${command}`)
+    logger.debug(`[Native-Whisper] Executing command: ${command}`)
     const transcript = await executeCppCommand(command, logger, options.withCuda)
 
     if (!transcript) {
@@ -56,14 +56,14 @@ export async function transcribe(filePath: string, options: IOptions): Promise<s
     }
 
     if (removeWavFileAfterTranscription && fs.existsSync(outputFilePath)) {
-      logger.debug(`[Whispry] Removing temporary WAV file: ${outputFilePath}`)
+      logger.debug(`[Native-Whisper] Removing temporary WAV file: ${outputFilePath}`)
       fs.unlinkSync(outputFilePath)
     }
 
     return transcript
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-    logger.error(`[Whispry] Error during processing: ${errorMessage}`)
+    logger.error(`[Native-Whisper] Error during processing: ${errorMessage}`)
     throw new Error(`Operation failed: ${errorMessage}`)
   }
 }
