@@ -33,7 +33,7 @@ async function testTypeDefinitions() {
 }
 
 async function main() {
-  console.log('=== Native-Whisper Basic Tests ===\n')
+  console.log('=== nwhisper Basic Tests ===\n')
 
   try {
     await testBasicImport()

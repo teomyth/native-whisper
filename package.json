@@ -1,5 +1,5 @@
 {
-  "name": "native-whisper",
+  "name": "nwhisper",
   "version": "0.2.9",
   "description": "Native Node.js bindings for OpenAI's Whisper using whisper.cpp. High-performance local speech-to-text with custom model path support.",
   "main": "dist/index.js",
@@ -8,11 +8,11 @@
     "access": "public"
   },
   "bin": {
-    "native-whisper": "dist/downloadModel.js"
+    "nwhisper": "dist/downloadModel.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/teomyth/native-whisper"
+    "url": "https://github.com/teomyth/nwhisper"
   },
   "scripts": {
     "start": "ts-node src/index.ts",
@@ -56,7 +56,7 @@
     "Timestamps",
     "nodejs whisper",
     "whisper nodejs",
-    "native-whisper",
+    "nwhisper",
     "custom model path",
     "generate timestamps",
     "generate transcript",
@@ -67,9 +67,9 @@
   ],
   "author": "teomyth <teomyth@gmail.com> (https://github.com/teomyth)",
   "license": "MIT",
-  "homepage": "https://github.com/teomyth/native-whisper#readme",
+  "homepage": "https://github.com/teomyth/nwhisper#readme",
   "bugs": {
-    "url": "https://github.com/teomyth/native-whisper/issues"
+    "url": "https://github.com/teomyth/nwhisper/issues"
   },
   "dependencies": {
     "readline-sync": "^1.4.10",

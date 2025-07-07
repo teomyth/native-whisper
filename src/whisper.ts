@@ -18,7 +18,7 @@ const defaultShellOptions: IShellOptions = {
 }
 
 function handleError(error: Error, logger: Logger = console) {
-  logger.error('[Native-Whisper] Error:', error.message)
+  logger.error('[nwhisper] Error:', error.message)
   shell.cd(projectDir)
   throw error
 }
@@ -51,9 +51,9 @@ function checkExecutableExists(logger: Logger = console): boolean {
   const exists = execPath !== ''
 
   if (exists) {
-    logger.debug(`[Native-Whisper] Found executable at: ${execPath}`)
+    logger.debug(`[nwhisper] Found executable at: ${execPath}`)
   } else {
-    logger.debug('[Native-Whisper] Executable not found in any expected location')
+    logger.debug('[nwhisper] Executable not found in any expected location')
   }
 
   return exists
@@ -88,7 +88,7 @@ export async function whisperShell(
           return
         }
 
-        logger.debug('[Native-Whisper] Transcribing Done!')
+        logger.debug('[nwhisper] Transcribing Done!')
         resolve(stdout)
       } else {
         reject(new Error(stderr || `Command failed with exit code ${code}`))
@@ -110,11 +110,11 @@ export async function executeCppCommand(
 
     // Check if executable already exists
     if (!checkExecutableExists(logger)) {
-      logger.debug('[Native-Whisper] whisper-cli executable not found. Building...')
+      logger.debug('[nwhisper] whisper-cli executable not found. Building...')
 
       // Configure build if not already configured
       if (!isBuildConfigured()) {
-        logger.debug('[Native-Whisper] Configuring CMake build...')
+        logger.debug('[nwhisper] Configuring CMake build...')
 
         let configureCommand = 'cmake -B build'
         if (withCuda) {
@@ -123,33 +123,33 @@ export async function executeCppCommand(
 
         const configResult = shell.exec(configureCommand)
         if (configResult.code !== 0) {
-          throw new Error(`[Native-Whisper] CMake configuration failed: ${configResult.stderr}`)
+          throw new Error(`[nwhisper] CMake configuration failed: ${configResult.stderr}`)
         }
 
-        logger.debug('[Native-Whisper] CMake configuration completed.')
+        logger.debug('[nwhisper] CMake configuration completed.')
       } else {
-        logger.debug('[Native-Whisper] Build already configured.')
+        logger.debug('[nwhisper] Build already configured.')
       }
 
       // Build the project
-      logger.debug('[Native-Whisper] Building whisper.cpp...')
+      logger.debug('[nwhisper] Building whisper.cpp...')
       const buildCommand = 'cmake --build build --config Release'
       const buildResult = shell.exec(buildCommand)
 
       if (buildResult.code !== 0) {
-        throw new Error(`[Native-Whisper] Build failed: ${buildResult.stderr}`)
+        throw new Error(`[nwhisper] Build failed: ${buildResult.stderr}`)
       }
 
       // Verify executable was created
       if (!checkExecutableExists(logger)) {
         throw new Error(
-          '[Native-Whisper] Build completed but executable not found. Please check the build output for errors.'
+          '[nwhisper] Build completed but executable not found. Please check the build output for errors.'
         )
       }
 
-      logger.log('[Native-Whisper] Build completed successfully.')
+      logger.log('[nwhisper] Build completed successfully.')
     } else {
-      logger.debug('[Native-Whisper] whisper-cli executable found. Skipping build.')
+      logger.debug('[nwhisper] whisper-cli executable found. Skipping build.')
     }
 
     return await whisperShell(command, defaultShellOptions, logger)

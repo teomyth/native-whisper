@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-// npx native-whisper download
+// npx nwhisper download
 
 import fs from 'node:fs'
 import path from 'node:path'
@@ -17,20 +17,20 @@ import type { Logger } from './types'
 
 const askForModel = async (logger: Logger = console): Promise<ModelName> => {
   const answer = readlineSync.question(
-    `\n[Native-Whisper] Enter model name (e.g. 'tiny.en') or 'cancel' to exit\n(ENTER for tiny.en): `
+    `\n[nwhisper] Enter model name (e.g. 'tiny.en') or 'cancel' to exit\n(ENTER for tiny.en): `
   )
 
   if (answer === 'cancel') {
-    logger.log('[Native-Whisper] Exiting model downloader.\n')
+    logger.log('[nwhisper] Exiting model downloader.\n')
     process.exit(0)
   }
   // User presses enter
   else if (answer === '') {
-    logger.log('[Native-Whisper] Going with', DEFAULT_MODEL)
+    logger.log('[nwhisper] Going with', DEFAULT_MODEL)
     return DEFAULT_MODEL
   } else if (!MODELS_LIST.includes(answer as ModelName)) {
     logger.log(
-      '\n[Native-Whisper] FAIL: Name not found. Check your spelling OR quit wizard and use custom model.\n'
+      '\n[nwhisper] FAIL: Name not found. Check your spelling OR quit wizard and use custom model.\n'
     )
 
     return await askForModel()
@@ -41,14 +41,14 @@ const askForModel = async (logger: Logger = console): Promise<ModelName> => {
 
 const askIfUserWantToUseCuda = (logger: Logger = console) => {
   const answer = readlineSync.question(
-    `\n[Native-Whisper] Do you want to use CUDA for compilation? (y/n)\n(ENTER for n): `
+    `\n[nwhisper] Do you want to use CUDA for compilation? (y/n)\n(ENTER for n): `
   )
 
   if (answer === 'y') {
-    logger.log('[Native-Whisper] Using CUDA for compilation.')
+    logger.log('[nwhisper] Using CUDA for compilation.')
     return true
   } else {
-    logger.log('[Native-Whisper] Not using CUDA for compilation.')
+    logger.log('[nwhisper] Not using CUDA for compilation.')
     return false
   }
 }
@@ -68,9 +68,9 @@ async function downloadModel(logger: Logger = console) {
     })
 
     if (anyModelExist.length > 0) {
-      logger.log('\n[Native-Whisper] Currently installed models:')
+      logger.log('\n[nwhisper] Currently installed models:')
       anyModelExist.forEach(model => logger.log(`- ${model}`))
-      logger.log('\n[Native-Whisper] You can install additional models from the list below.\n')
+      logger.log('\n[nwhisper] You can install additional models from the list below.\n')
     }
 
     logger.log(`
@@ -90,7 +90,7 @@ async function downloadModel(logger: Logger = console) {
 `)
 
     if (!shell.which('./download-ggml-model.sh')) {
-      throw '[Native-Whisper] Error: Downloader not found.\n'
+      throw '[nwhisper] Error: Downloader not found.\n'
     }
 
     const modelName = await askForModel()
@@ -101,13 +101,13 @@ async function downloadModel(logger: Logger = console) {
     shell.chmod('+x', scriptPath)
     shell.exec(`${scriptPath} ${modelName}`)
 
-    logger.log('[Native-Whisper] Attempting to build whisper.cpp...\n')
+    logger.log('[nwhisper] Attempting to build whisper.cpp...\n')
     shell.cd('../')
 
     const withCuda = askIfUserWantToUseCuda()
 
     // Use CMake instead of make
-    logger.log('[Native-Whisper] Configuring CMake build...')
+    logger.log('[nwhisper] Configuring CMake build...')
     let configureCommand = 'cmake -B build'
     if (withCuda) {
       configureCommand += ' -DGGML_CUDA=1'
@@ -115,12 +115,12 @@ async function downloadModel(logger: Logger = console) {
 
     shell.exec(configureCommand)
 
-    logger.log('[Native-Whisper] Building with CMake...')
+    logger.log('[nwhisper] Building with CMake...')
     shell.exec('cmake --build build --config Release')
 
     process.exit(0)
   } catch (error) {
-    logger.error('[Native-Whisper] Error Caught in downloadModel\n')
+    logger.error('[nwhisper] Error Caught in downloadModel\n')
     logger.error(error)
     return error
   }

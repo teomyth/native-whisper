@@ -6,7 +6,7 @@ const AUDIO_FILE = 'mother_teresa.wav'
 const filePath = path.resolve(__dirname, AUDIO_FILE)
 
 async function main() {
-  console.log('=== Native-Whisper Custom Directory Example ===\n')
+  console.log('=== nwhisper Custom Directory Example ===\n')
 
   try {
     const customModelDir = path.join(__dirname, '..', '.models')

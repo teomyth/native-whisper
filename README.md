@@ -1,4 +1,4 @@
-# native-whisper
+# nwhisper
 
 Native Node.js bindings for OpenAI's Whisper using whisper.cpp. High-performance local speech-to-text with custom model path support.
 
@@ -25,16 +25,16 @@ sudo apt update
 sudo apt install build-essential
 ```
 
-2. Install native-whisper with npm
+2. Install nwhisper with npm
 
 ```bash
-  npm i native-whisper
+  npm i nwhisper
 ```
 
 3. Download whisper model (for standard models)
 
 ```bash
-  npx native-whisper download
+  npx nwhisper download
 ```
 
 -   NOTE: user may need to install make tool
@@ -45,96 +45,96 @@ sudo apt install build-essential
    - Option 1: Install MSYS2 from https://www.msys2.org/
    - Option 2: Install MinGW-w64 from https://www.mingw-w64.org/
 
-2. Install native-whisper with npm
+2. Install nwhisper with npm
 ```bash
-npm i native-whisper
+npm i nwhisper
 ```
 
 3. Download whisper model (for standard models)
 ```bash
-npx native-whisper download
+npx nwhisper download
 ```
 
 - Note: Make sure mingw32-make or make is available in your system PATH.
 
 ## Usage/Examples
 
-See `example/index.ts` (can be run with `$ npm run test`)
+See `example/basic.ts` (can be run with `$ npm run example`)
 
 ```javascript
 import path from 'path'
-import { transcribe } from 'native-whisper'
+import { transcribe } from 'nwhisper'
 
 // Need to provide exact path to your audio file.
 const filePath = path.resolve(__dirname, 'YourAudioFileName')
 
 // Using standard model
 await transcribe(filePath, {
-	modelName: 'base.en', //Downloaded models name
-	autoDownloadModelName: 'base.en', // (optional) auto download a model if model is not present
-	removeWavFileAfterTranscription: false, // (optional) remove wav file once transcribed
-	withCuda: false, // (optional) use cuda for faster processing
-	logger: console, // (optional) Logging instance, defaults to console
-	whisperOptions: {
-		outputInCsv: false, // get output result in csv file
-		outputInJson: false, // get output result in json file
-		outputInJsonFull: false, // get output result in json file including more information
-		outputInLrc: false, // get output result in lrc file
-		outputInSrt: true, // get output result in srt file
-		outputInText: false, // get output result in txt file
-		outputInVtt: false, // get output result in vtt file
-		outputInWords: false, // get output result in wts file for karaoke
-		translateToEnglish: false, // translate from source language to english
-		wordTimestamps: false, // word-level timestamps
-		timestamps_length: 20, // amount of dialogue per timestamp pair
-		splitOnWord: true, // split on word rather than on token
-	},
+  modelName: 'base.en', //Downloaded models name
+  autoDownloadModelName: 'base.en', // (optional) auto download a model if model is not present
+  removeWavFileAfterTranscription: false, // (optional) remove wav file once transcribed
+  withCuda: false, // (optional) use cuda for faster processing
+  logger: console, // (optional) Logging instance, defaults to console
+  whisperOptions: {
+    outputInCsv: false, // get output result in csv file
+    outputInJson: false, // get output result in json file
+    outputInJsonFull: false, // get output result in json file including more information
+    outputInLrc: false, // get output result in lrc file
+    outputInSrt: true, // get output result in srt file
+    outputInText: false, // get output result in txt file
+    outputInVtt: false, // get output result in vtt file
+    outputInWords: false, // get output result in wts file for karaoke
+    translateToEnglish: false, // translate from source language to english
+    wordTimestamps: false, // word-level timestamps
+    timestamps_length: 20, // amount of dialogue per timestamp pair
+    splitOnWord: true, // split on word rather than on token
+  },
 })
 
 // Using custom models (NEW FEATURES)
 // Method 1: Specify model directory
 const modelDir = path.join(process.cwd(), '.models')
 await transcribe(filePath, {
-	modelName: 'tiny.en',
-	modelDir: modelDir,
-	whisperOptions: {
-		outputInSrt: true,
-	},
+  modelName: 'tiny.en',
+  modelDir: modelDir,
+  whisperOptions: {
+    outputInSrt: true,
+  },
 })
 
 // Method 2: Direct file path
 const modelPath = path.join(__dirname, 'models', 'my-custom-model.bin')
 await transcribe(filePath, {
-	modelPath: modelPath,
-	whisperOptions: {
-		outputInSrt: true,
-		language: 'en',
-	},
+  modelPath: modelPath,
+  whisperOptions: {
+    outputInSrt: true,
+    language: 'en',
+  },
 })
 
 // Method 3: Download to and use custom directory
 await transcribe(filePath, {
-	modelName: 'tiny.en',
-	autoDownloadModelName: 'tiny.en',
-	modelDir: path.join(__dirname, 'models'), // Download to and use this directory
-	whisperOptions: {
-		outputInSrt: true,
-	},
+  modelName: 'tiny.en',
+  autoDownloadModelName: 'tiny.en',
+  modelDir: path.join(__dirname, 'models'), // Download to and use this directory
+  whisperOptions: {
+    outputInSrt: true,
+  },
 })
 
 // Model list
 const MODELS_LIST = [
-	'tiny',
-	'tiny.en',
-	'base',
-	'base.en',
-	'small',
-	'small.en',
-	'medium',
-	'medium.en',
-	'large-v1',
-	'large',
-	'large-v3-turbo',
+  'tiny',
+  'tiny.en',
+  'base',
+  'base.en',
+  'small',
+  'small.en',
+  'medium',
+  'medium.en',
+  'large-v1',
+  'large',
+  'large-v3-turbo',
 ]
 ```
 
@@ -142,36 +142,36 @@ const MODELS_LIST = [
 
 ```
  interface IOptions {
-	modelName?: string // Model name (works with directories)
-	modelPath?: string // NEW: Direct path to model file
-	modelDir?: string // NEW: Directory for models (download & use)
-	autoDownloadModelName?: string // Model to auto-download
-	removeWavFileAfterTranscription?: boolean
-	withCuda?: boolean
-	whisperOptions?: WhisperOptions
-	logger?: Console
+  modelName?: string // Model name (works with directories)
+  modelPath?: string // NEW: Direct path to model file
+  modelDir?: string // NEW: Directory for models (download & use)
+  autoDownloadModelName?: string // Model to auto-download
+  removeWavFileAfterTranscription?: boolean
+  withCuda?: boolean
+  whisperOptions?: WhisperOptions
+  logger?: Console
 }
 
  interface WhisperOptions {
-	outputInCsv?: boolean
-	outputInJson?: boolean
-	outputInJsonFull?: boolean
-	outputInLrc?: boolean
-	outputInSrt?: boolean
-	outputInText?: boolean
-	outputInVtt?: boolean
-	outputInWords?: boolean
-	translateToEnglish?: boolean
-	timestamps_length?: number
-	wordTimestamps?: boolean
-	splitOnWord?: boolean
+  outputInCsv?: boolean
+  outputInJson?: boolean
+  outputInJsonFull?: boolean
+  outputInLrc?: boolean
+  outputInSrt?: boolean
+  outputInText?: boolean
+  outputInVtt?: boolean
+  outputInWords?: boolean
+  translateToEnglish?: boolean
+  timestamps_length?: number
+  wordTimestamps?: boolean
+  splitOnWord?: boolean
 }
 
 ```
 
 ## Custom Model Path Usage
 
-The main feature of native-whisper is the ability to use custom model files. This is useful when you have:
+The main feature of nwhisper is the ability to use custom model files. This is useful when you have:
 - Fine-tuned models for specific domains
 - Custom trained models
 - Models in different locations than the default
@@ -179,7 +179,7 @@ The main feature of native-whisper is the ability to use custom model files. Thi
 ### Example with Custom Model
 
 ```javascript
-import { transcribe } from 'native-whisper'
+import { transcribe } from 'nwhisper'
 import path from 'path'
 
 // Method 1: Specify model directory
@@ -230,14 +230,14 @@ const result3 = await transcribe('audio.wav', {
 
 ## Migration from nodejs-whisper
 
-Native-whisper is fully backward compatible with nodejs-whisper. Simply replace the package:
+nwhisper is fully backward compatible with nodejs-whisper. Simply replace the package:
 
 ```bash
 # Remove old package
 npm uninstall nodejs-whisper
 
-# Install native-whisper
-npm install native-whisper
+# Install nwhisper
+npm install nwhisper
 ```
 
 ### Function Names
@@ -247,11 +247,11 @@ npm install native-whisper
 
 ```javascript
 // New (recommended)
-import { transcribe } from 'native-whisper'
+import { transcribe } from 'nwhisper'
 await transcribe('audio.wav', { modelName: 'tiny.en' })
 
 // Legacy (deprecated but still works)
-import { nodewhisper } from 'native-whisper'
+import { nodewhisper } from 'nwhisper'
 await nodewhisper('audio.wav', { modelName: 'tiny.en' })
 ```
 
@@ -262,13 +262,13 @@ No code changes required for existing functionality!
 Clone the project
 
 ```bash
-  git clone https://github.com/teomyth/native-whisper
+  git clone https://github.com/teomyth/nwhisper
 ```
 
 Go to the project directory
 
 ```bash
-  cd native-whisper
+  cd nwhisper
 ```
 
 Install dependencies
@@ -303,7 +303,7 @@ If you have any feedback, please reach out to us at teomyth@gmail.com
 
 ## Acknowledgments
 
-This project is a fork of [nodejs-whisper](https://github.com/ChetanXpro/nodejs-whisper) by [@chetanXpro](https://www.github.com/chetanXpro). We extend our gratitude to the original author for creating the foundation that made native-whisper possible.
+This project is a fork of [nodejs-whisper](https://github.com/ChetanXpro/nodejs-whisper) by [@chetanXpro](https://www.github.com/chetanXpro). We extend our gratitude to the original author for creating the foundation that made nwhisper possible.
 
 ### Original Project
 - **Original Author**: [@chetanXpro](https://www.github.com/chetanXpro)

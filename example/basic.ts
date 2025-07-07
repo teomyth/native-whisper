@@ -6,7 +6,7 @@ const AUDIO_FILE = 'mother_teresa.wav'
 const filePath = path.resolve(__dirname, AUDIO_FILE)
 
 async function main() {
-  console.log('=== Native-Whisper Basic Example ===\n')
+  console.log('=== nwhisper Basic Example ===\n')
 
   try {
     console.log('Using standard model with auto-download...')
