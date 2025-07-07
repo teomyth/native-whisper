@@ -4,16 +4,16 @@
   "description": "Native Node.js bindings for OpenAI's Whisper using whisper.cpp. High-performance local speech-to-text with custom model support.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "publishConfig": {
-    "access": "public"
-  },
   "bin": {
     "nwhisper": "dist/downloadModel.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/teomyth/nwhisper"
+  "publishConfig": {
+    "access": "public"
   },
+  "files": [
+    "dist/",
+    "cpp/"
+  ],
   "scripts": {
     "start": "ts-node src/index.ts",
     "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
@@ -38,6 +38,24 @@
     "release:alpha": "release-it --preRelease=alpha",
     "prepare": "husky"
   },
+  "dependencies": {
+    "readline-sync": "^1.4.10",
+    "shelljs": "^0.10.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.6",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@release-it/conventional-changelog": "^10.0.1",
+    "@types/node": "^24.0.10",
+    "@types/readline-sync": "^1.4.8",
+    "@types/shelljs": "^0.8.17",
+    "husky": "^9.1.7",
+    "nodemon": "3.1.10",
+    "release-it": "^19.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
   "keywords": [
     "whisper",
     "whisper.cpp",
@@ -58,30 +76,12 @@
   ],
   "author": "teomyth <teomyth@gmail.com> (https://github.com/teomyth)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/teomyth/nwhisper"
+  },
   "homepage": "https://github.com/teomyth/nwhisper#readme",
   "bugs": {
     "url": "https://github.com/teomyth/nwhisper/issues"
-  },
-  "dependencies": {
-    "readline-sync": "^1.4.10",
-    "shelljs": "^0.10.0"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^2.0.6",
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
-    "@release-it/conventional-changelog": "^10.0.1",
-    "@types/node": "^24.0.10",
-    "@types/readline-sync": "^1.4.8",
-    "@types/shelljs": "^0.8.17",
-    "husky": "^9.1.7",
-    "nodemon": "3.1.10",
-    "release-it": "^19.0.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
-  },
-  "files": [
-    "dist/",
-    "cpp/"
-  ]
+  }
 }
